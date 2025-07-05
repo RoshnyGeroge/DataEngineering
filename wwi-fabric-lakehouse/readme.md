@@ -30,7 +30,6 @@ Based on Microsoft's [Wide World Importers sample](https://assetsprod.microsoft.
 ![Data Model](./diagram/data_model.jpg) 
 ![Techbical architecture](./diagram/TechnicalArchitecture.drawio) 
 ![ Lineage](./diagram/WW1_Lineage.jpg) 
-
 ![Power BI Dashboard](./images/Profit_Reporting.png)
 
 ## 🚀 Setup
@@ -42,7 +41,6 @@ Based on Microsoft's [Wide World Importers sample](https://assetsprod.microsoft.
 
 ## 📊 What I Learned
 - Built layered lakehouse  (Bronze->Silver → gold)
-- Automated refresh
 - Gained deeper insight into enterprise-style datasets and transformations
 - Fabric provides the V-order capability to write optimized Delta lake files. V-order often improves compression by three to four times, and up to 10 times, performance acceleration over the Delta Lake files that aren't optimized.
     -- spark.conf.set("spark.microsoft.delta.optimizeWrite.enabled", "true")
@@ -54,4 +52,4 @@ Based on Microsoft's [Wide World Importers sample](https://assetsprod.microsoft.
     AnalysisException: [DELTA_FAILED_TO_MERGE_FIELDS] Failed to merge fields 'CustomerKey' and 'CustomerKey'  It typically indicates a schema conflict—specifically, the field CustomerKey exists in multiple places (e.g., in both source and target schemas), but with different definitions or metadata eg,differt datatype, nullability, case sensitivity etc.
 
 ## 👩‍💻 Author
-Roshny George | [LinkedIn](https://www.linkedin.com/in/roshnygeorge)
+Roshny George
