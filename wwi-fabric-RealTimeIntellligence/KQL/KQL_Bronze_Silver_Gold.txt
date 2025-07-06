@@ -1,0 +1,77 @@
+//***********************************************************************************************************
+// Here are two articles to help you get started with KQL:
+// KQL reference guide - https://aka.ms/KQLguide
+// SQL - KQL conversions - https://aka.ms/sqlcheatsheet
+//***********************************************************************************************************
+
+// Use "take" to view a sample number of records in the table and check the data.
+['bicycle-eTable']
+| take 10
+
+
+
+// See how many records are in the table.
+['bicycle-eTable']
+| count 
+
+// This query returns the number of ingestions per hour in the given table.
+['bicycle-eTable']
+| summarize IngestionCount = count() by bin(ingestion_time(), 1h)
+
+
+// alter table and add it to Bronze layer
+.alter table ['bicycle-eTable'] (BikepointID:string,Street:string,Neighbourhood:string,Latitude:dynamic,Longitude:dynamic,No_Bikes:long,No_Empty_Docks:long,Timestamp:datetime) with (folder="Bronze")
+
+// Use 'take' to view a sample number of records in the table and check the data.
+['bicycle-eTable']
+| take 100
+
+// delete all data
+//.clear table ['bicycle-eTable'] data
+
+//Create a  new table to Silver layer 
+//.create table TransformedData (BikepointID: int, Street: string, Neighbourhood: string, Latitude: dynamic, Longitude: dynamic, No_Bikes: long, No_Empty_Docks: long, Timestamp: datetime, BikesToBeFilled: long, Action: string) with (folder="Silver")
+
+// create a LQL function to transform data
+.create-or-alter function TransformRawData() {
+['bicycle-eTable']
+|parse BikepointID with * "BikePoints_" BikepointID:int
+| extend BikesToBeFilled = No_Empty_Docks - No_Bikes
+| extend Action = iff(BikesToBeFilled > 0, tostring(BikesToBeFilled), "NA")
+ }
+
+
+// transform data with the help of update policy 
+.alter table TransformedData policy update
+```[{
+    "IsEnabled": true,
+    "Source": "bicycle-eTable",
+    "Query": "TransformRawData()",
+    "IsTransactional": false,
+    "PropagateIngestionProperties": false
+}]```
+ 
+//run Run event stream to load data into Bronze Table
+
+// Use 'take' to view a sample number of records in the table and check the data.
+['bicycle-eTable']
+| take 100
+
+// Use 'take' to view a sample number of records in the table and check the data.
+TransformedData
+| take 100
+
+// create Gold Layer
+.create-or-alter materialized-view with (folder="Gold") AggregatedData on table TransformedData
+{
+   TransformedData
+   | summarize arg_max(Timestamp,No_Bikes) by BikepointID
+}
+
+AggregatedData
+| take 100
+
+AggregatedData
+| sort by BikepointID
+| render columnchart with (ycolumns=No_Bikes,xcolumn=BikepointID)
+
