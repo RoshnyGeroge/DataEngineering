@@ -12,8 +12,9 @@ Build an end-to-end data engineering solution using Microsoft Fabric to ingest, 
 ## 🔄 Solution Architecture
 1. Ingest Parquet files from WWI dataset in Azure Storage  into Datawarehouse using Fabric pipeline, Copy activity
 2. Load Dimension tables  and fact table from Files in data warehouse using T-SQL
-4. Perform transformations (e.g., joins, aggregations), Time traveling using  Views, ISQL, Stored proecdures.
-5. Uae Shortcuts in warehhpuse to avoid duplication of data in Lakehosuse
+3. Perform transformations (e.g., joins, aggregations), Time traveling using  Views, ISQL, Stored proecdures.
+4. Use Shortcuts in warehhpuse to avoid duplication of data in Lakehosuse.
+5. Apply Security measures.
 6. Visualize KPIs in Power BI connected to the Dataware house.
 
 ## 📈 Example KPIs
@@ -34,17 +35,25 @@ SQLs: ./DbScripts
 3. Set up  Datawarehouse .
 4. set up piple line and ingest sample data
 5. Set up short cut to Lakehouse
-4. Run T-SQLs and procedures
-5. Prepare reports
+6. Run T-SQLs and procedures
+7. Prepare reports
 
 ## 📊 What I Learned
-- DatawareHouse, Ingestion from Azure storage
+- DatawareHouse
+- Data Modelling
 - set up Star Schema ( Facts and Dimensions)
+- Ingestion from Azure storage, via T-SQL, pipeline, copy activity
 - T-SQL, Stored proecdures, short cuts
 - Clones and time travelling
-- Reporting 
+- explore content with OpenRowset
+- Security
+    - Column level, Row level,  predicate and security policy
+    - Grant and Revoke Commands, permissions
+    - dynamnic data masks
+- Reporting
 - Query optimization:
     - Indexing, Partitioning, B-trees, reduce table scan
+
 
 
 ## 👩‍💻 Author
